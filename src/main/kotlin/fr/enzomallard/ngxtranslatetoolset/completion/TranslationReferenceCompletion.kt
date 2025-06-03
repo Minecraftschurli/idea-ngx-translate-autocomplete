@@ -9,7 +9,13 @@ class TranslationReferenceCompletion : CompletionContributor() {
     init {
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement().withParent(ElementPatterns.HTML_TRANSLATION_PLATFORM_PATTERN),
+            PlatformPatterns.psiElement().withParent(ElementPatterns.HTML_PIPE_TRANSLATION_PLATFORM_PATTERN),
+            TranslationCompletionProvider()
+        )
+
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement().withParent(ElementPatterns.HTML_DIRECTIVE_TRANSLATION_PLATFORM_PATTERN),
             TranslationCompletionProvider()
         )
 

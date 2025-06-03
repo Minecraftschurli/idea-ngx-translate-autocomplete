@@ -32,7 +32,7 @@ object TranslationUtils {
     @NonNls
     val FRAMEWORKS = listOf(
         TranslationFramework("translate", "instant"),
-        TranslationFramework("transloco", "translate"),
+        TranslationFramework("transloco", "translate", "transloco"),
     )
 
     const val ICON_SIZE = 8
