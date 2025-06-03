@@ -1,4 +1,10 @@
 [versions]
+# Gradle Releases -> https://github.com/gradle/gradle/releases
+gradle = "8.11.1"
+# Java version
+java = "21"
+# IntelliJ Platform version
+platformVersion = "2025.1"
 # plugins
 kotlin = "2.1.21"
 changelog = "2.2.1"
@@ -12,3 +18,17 @@ intelliJPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "inte
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 qodana = { id = "org.jetbrains.qodana", version.ref = "qodana" }
+
+[libraries]
+# IntelliJ Platform Properties -> https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html#custom-target-platforms
+intellijPlatform = { group = "platform", name = "IU", version.ref = "platformVersion" }
+# Plugin Dependencies -> https://plugins.jetbrains.com/docs/intellij/plugin-dependencies.html
+# IntelliJ Bundled plugins
+javascript = { group = "bundled", name = "JavaScript" }
+angular = { group = "bundled", name = "AngularJS" }
+
+[bundles]
+# IntelliJ bundled plugins
+bundledPlugins = ["javascript", "angular"]
+# non-bundled plugins
+plugins = []

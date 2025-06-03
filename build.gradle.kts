@@ -25,22 +25,23 @@ repositories {
 dependencies {
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
+        create(libs.intellijPlatform.map { dep -> dep.name }, libs.intellijPlatform.map { dep -> dep.version as String })
 
         pluginVerifier()
         zipSigner()
 
         // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file for plugin from JetBrains Marketplace.
-        plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
-        
-        // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
-        bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
+        plugins(libs.bundles.plugins.map { bundle -> bundle.map { dep -> dep.module.toString() + (if (dep.version != null) (":" + dep.version) else "") } })
+        // Plugin Dependencies. Uses `bundledPlugins` bundle from the libs.versions.toml file for bundled IntelliJ Platform plugins.
+        bundledPlugins(libs.bundles.bundledPlugins.map { bundle -> bundle.map { dep -> dep.name } })
     }
 }
 
 // Set the JVM language level used to build the project.
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain {
+        languageVersion.set(libs.versions.java.map(JavaLanguageVersion::of))
+    }
 }
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
@@ -120,7 +121,7 @@ kover {
 
 tasks {
     wrapper {
-        gradleVersion = providers.gradleProperty("gradleVersion").get()
+        gradleVersion = libs.versions.gradle.get()
     }
 
     publishPlugin {
